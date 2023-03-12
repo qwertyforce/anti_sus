@@ -1,5 +1,7 @@
 # anti_sus  
-Outlier detection in embeddings
+Outlier detection in embeddings  
+
+[how it works](https://github.com/qwertyforce/anti_sus/blob/main/automatic_image_mining.md)  
   
 get features with [image_text_features_web](https://github.com/qwertyforce/image_text_features_web) copy them to folder ./clean/  
 
