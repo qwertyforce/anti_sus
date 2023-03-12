@@ -36,7 +36,7 @@ After that we can score samples, where score is log-likelihood of each sample.
 ```python
 gmm.score_samples(features)
 ```
-This is the histogram of scores of training(clean) dataset  
+This is the histogram of scores of training(clean) dataset (x is gmm score)
 <img src="./images_md/post_3/output_1.png">  
 
 and this is the histogram of scores of unfiltered dataset (/r/EarthPorn/). Scores are clipped at 0 and -3000 for better visibility.
@@ -48,7 +48,8 @@ Now we can choose a threshold. Lower threshold ⇒ more images, more outliers an
 # Watermark detection
 
 Unfortunately, the presence of watermarks doesn't have much effect on GMM score. So, I've trained a binary classifier (no_watermark/watermark). I've annotated 22k images and uploaded the dataset to [kaggle](https://www.kaggle.com/datasets/qwertyforce/scenery-watermarks).  
-I've found that downscaling image to 224x224 erases subtle watermarks, so I've decided to resize images to 448x448, get features of each 224x224 quadrant and concatenate them. Accuracy is about 97-98%, but there are still false-negatives. Probably need a bigger and more diverse dataset.   
+I've found that downscaling image to 224x224 erases subtle watermarks, so I've decided to resize images to 448x448, get features of each 224x224 quadrant and concatenate them. Accuracy is about 97-98%, but there are still false-negatives. Probably need a bigger and more diverse dataset.  
+Pic - plot of losses, blue - train split, orange - test split.  
 <img src="./images_md/post_3/output_3.png">  
 
 # anti_sus  
