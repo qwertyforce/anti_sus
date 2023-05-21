@@ -1,5 +1,6 @@
 # anti_sus  
 Outlier detection in embeddings  
+download clip_visual.onnx from [here](https://github.com/qwertyforce/anti_sus/releases/tag/clip_onnx_model)
 
 [how it works](https://github.com/qwertyforce/anti_sus/blob/main/automatic_image_mining.md)  
   
