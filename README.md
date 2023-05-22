@@ -1,6 +1,7 @@
 # anti_sus  
 Outlier detection in embeddings  
-download clip_visual.onnx from [here](https://github.com/qwertyforce/anti_sus/releases/tag/clip_onnx_model)
+download clip_visual.onnx from [here](https://github.com/qwertyforce/anti_sus/releases/tag/clip_onnx_model)  
+download model_wat.onnx from [here](https://github.com/qwertyforce/anti_sus/releases/tag/wat_model_0.1)
 
 [how it works](https://github.com/qwertyforce/anti_sus/blob/main/automatic_image_mining.md)  
   
@@ -11,4 +12,4 @@ testing.ipynb -> notebook for comparing distributions of ./clean/ and ./test/ fo
 anti_sus.py -> zeromq server for filtering outlier images. Receives batch of rgb numpy images, returns indexes of good images.  
 It has 2 step filtering:
 - gmm score threshold  
-- watermark detection (filters images with watermarks, trained on  [scenery_watermarks](https://github.com/qwertyforce/scenery_watermarks)
+- watermark detection (filters images with watermarks, trained on  [scenery_watermarks](https://github.com/qwertyforce/scenery_watermarks))
