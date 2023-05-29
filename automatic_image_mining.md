@@ -52,6 +52,16 @@ I've found that downscaling image to 224x224 erases subtle watermarks, so I've d
 Pic - plot of losses, blue - train split, orange - test split.  
 <img src="./images_md/post_3/output_3.png">  
 
+## Update 22.05.2023
+Previous solution (using clip for watermark detection) consumed a lot of VRAM and getting clip features for each quadrant is pretty slow. So I've decided to fine-tune a separate network for this task. I've chosen a pretrained [EfficientNetV2-B0](https://arxiv.org/pdf/2104.00298.pdf).
+
+<img src="./images_md/post_3/effnet_performance.png">  
+
+Accuracy of the new model is a little bit higher, due to higher resolution (I've trained with 512x512).
+I've also converted new watermark detection model and clip model to onnx. This enables low-ram cpu inference. I had to rewrite some pre-processing steps in numpy, like image normalization and standardization. 
+
+The new model can be found at anti_sus github repo and [hugging face](https://huggingface.co/qwertyforce/watermark_detection)
+
 # anti_sus  
 [[Github]](https://github.com/qwertyforce/anti_sus)  
 anti_sus is a zeromq server for filtering outlier images. It receives a batch of rgb images (numpy array) and returns indexes of good images.
@@ -64,7 +74,8 @@ In the future, I'd like to add models that can evaluate the image quality ([IQA]
 # nomad
 [[Github]](https://github.com/qwertyforce/nomad)  
 nomad is as super hacky reddit parser that uses [Pushshift](https://pushshift.io/) API to get new posts from reddit. Supports flickr and imgur image download.
-
+## Update 22.05.2023
+Reddit [killed](https://www.reddit.com/r/modnews/comments/134tjpe/reddit_data_api_update_changes_to_pushshift_access/) Pushshift, so nomad is switched to official reddit api.
 # Results
 154 images in ~14 hours, with threshold of 700.  
 <img src="./images_md/post_3/example.png">  
@@ -89,7 +100,7 @@ Top 15 subreddits:
 We can see that we get a pretty diverse list of subreddits. If we let it run for a while, we'll get a list of subreddits that are similar to our interests, and we can parse them individually.
 
 # Integration with scenery
-We can use this combination of nomad+anti_sus in two different ways: we can use it as a standalone tool and just save new images to the file system, or we can integrate it with scenery. This way, new images will be added to our photo gallery automatically, and we can use ambience to check if an image is a duplicate. At the time of writing, it's preferred to use phash, I am currently researching the possibility of making use of local features from local_features_web, but it's too memory/computationally expensive. Why not just use CLIP features? Too unreliable, lots of errors
+We can use this combination of nomad+anti_sus in two different ways: we can use it as a standalone tool and just save new images to the file system, or we can integrate it with scenery. This way, new images will be added to our photo gallery automatically, and we can use ambience to check if an image is a duplicate. At the time of writing, it's preferred to use phash, I am currently researching the possibility of making use of local features from local_features_web, but it's too memory/computationally expensive. Why not just use CLIP features? Too unreliable, lots of errors  
 <img src="./images_md/post_3/diagram.png">  
 
 #
