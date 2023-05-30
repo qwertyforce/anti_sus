@@ -7,13 +7,13 @@ import onnxruntime as rt
 
 with open("./gmm_16_r.model","rb") as file:
     gm = pickle.load(file)
-GMM_THRESHOLD = 700
+GMM_THRESHOLD = 900
 
 sess_options = rt.SessionOptions()
 sess_options.graph_optimization_level = rt.GraphOptimizationLevel.ORT_ENABLE_ALL
 # cpu_provider_options = {"arena_extend_strategy": "kSameAsRequested"}
 cpu_provider_options={}
-# sess_options.enable_cpu_mem_arena=False     #enable if problems with ram consumption
+sess_options.enable_cpu_mem_arena=False     #set to False if problems with ram consumption
 session_clip = rt.InferenceSession("./clip_visual.onnx", sess_options, providers=[("CPUExecutionProvider", cpu_provider_options)])
 session_wat = rt.InferenceSession("./model_wat.onnx", sess_options, providers=[("CPUExecutionProvider", cpu_provider_options)])
 
@@ -98,17 +98,17 @@ socket = context.socket(zmq.REP)
 socket.bind("tcp://*:7777")
 print("started")
 while True:
-        message = socket.recv(copy=False)
-        images = np.frombuffer(message,dtype=np.uint8).reshape(-1,512, 512, 3) #BHWC        
-        results_fit = check_fit(images)
-        if len(results_fit)==0:
-            socket.send(np.array([],dtype=np.int32).tobytes())
-            continue
+    message = socket.recv(copy=False)
+    images = np.frombuffer(message,dtype=np.uint8).reshape(-1,512, 512, 3) #BHWC        
+    results_fit = check_fit(images)
+    if len(results_fit)==0:
+        socket.send(np.array([],dtype=np.int32).tobytes())
+        continue
 
-        results_wat = check_watermarks(images[results_fit])
-        if len(results_wat)==0:
-            socket.send(np.array([],dtype=np.int32).tobytes())
-            continue
-        
-        final_results = results_fit[results_wat]
-        socket.send(np.int32(final_results).tobytes())
+    results_wat = check_watermarks(images[results_fit])
+    if len(results_wat)==0:
+        socket.send(np.array([],dtype=np.int32).tobytes())
+        continue
+    
+    final_results = results_fit[results_wat]
+    socket.send(np.int32(final_results).tobytes())
