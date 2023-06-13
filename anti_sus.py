@@ -4,6 +4,7 @@ from PIL import Image
 import pickle
 import sklearn            #for pickled gmm
 import onnxruntime as rt
+import traceback
 
 with open("./gmm_16_r.model","rb") as file:
     gm = pickle.load(file)
@@ -98,17 +99,20 @@ socket = context.socket(zmq.REP)
 socket.bind("tcp://*:7777")
 print("started")
 while True:
-    message = socket.recv(copy=False)
-    images = np.frombuffer(message,dtype=np.uint8).reshape(-1,512, 512, 3) #BHWC        
-    results_fit = check_fit(images)
-    if len(results_fit)==0:
-        socket.send(np.array([],dtype=np.int32).tobytes())
-        continue
+    try:
+        message = socket.recv(copy=False)
+        images = np.frombuffer(message,dtype=np.uint8).reshape(-1,512, 512, 3) #BHWC        
+        results_fit = check_fit(images)
+        if len(results_fit)==0:
+            socket.send(np.array([],dtype=np.int32).tobytes())
+            continue
 
-    results_wat = check_watermarks(images[results_fit])
-    if len(results_wat)==0:
-        socket.send(np.array([],dtype=np.int32).tobytes())
-        continue
+        results_wat = check_watermarks(images[results_fit])
+        if len(results_wat)==0:
+            socket.send(np.array([],dtype=np.int32).tobytes())
+            continue
     
-    final_results = results_fit[results_wat]
-    socket.send(np.int32(final_results).tobytes())
+        final_results = results_fit[results_wat]
+        socket.send(np.int32(final_results).tobytes())
+    except:
+        traceback.print_exc()
