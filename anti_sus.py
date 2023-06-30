@@ -116,3 +116,8 @@ while True:
         socket.send(np.int32(final_results).tobytes())
     except:
         traceback.print_exc()
+        socket.setsockopt(zmq.LINGER, 0)
+        socket.close()
+        socket = context.socket(zmq.REP)
+        socket.bind("tcp://*:7777")
+        print("server restarted")
