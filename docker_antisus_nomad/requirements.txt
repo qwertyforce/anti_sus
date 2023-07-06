@@ -1,0 +1,7 @@
+onnxruntime==1.14.0
+Pillow==9.5.0
+pyzmq==24.0.1
+tqdm==4.64.0
+flickrapi==2.4.0
+Requests==2.31.0
+scikit-learn
