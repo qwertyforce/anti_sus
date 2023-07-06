@@ -13,3 +13,7 @@ anti_sus.py -> zeromq server for filtering outlier images. Receives batch of rgb
 It has 2 step filtering:
 - gmm score threshold  
 - watermark detection (filters images with watermarks, trained on  [scenery_watermarks](https://github.com/qwertyforce/scenery_watermarks))
+
+### Docker
+```docker build -t qwertyforce/anti_sus_nomad:1.0.0 --network host -t qwertyforce/anti_sus_nomad:latest ./```  
+```docker run -d --network host --name anit_sus_nomad qwertyforce/anti_sus_nomad:1.0.0```  
