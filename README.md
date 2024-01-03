@@ -16,4 +16,4 @@ It has 2 step filtering:
 
 ### Docker
 ```docker build -t qwertyforce/anti_sus_nomad:1.0.0 --network host -t qwertyforce/anti_sus_nomad:latest ./```  
-```docker run -d --network host --name anit_sus_nomad qwertyforce/anti_sus_nomad:1.0.0```  
+```docker run -d --network host --name anti_sus_nomad qwertyforce/anti_sus_nomad:1.0.0```  
